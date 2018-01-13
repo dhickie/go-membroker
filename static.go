@@ -10,7 +10,7 @@ var (
 // Subscribe will subscribe the provided callback function to messages
 // on the provided topic. It returns an ID of the subscriber, in case
 // it wants to unsubscribe later.
-func Subscribe(topic string, callback func([]byte)) int {
+func Subscribe(topic string, callback func(Message)) int {
 	createBrokerIfNeeded()
 	return b.subscribe(topic, callback)
 }
@@ -26,6 +26,12 @@ func Unsubscribe(topic string, id int) {
 func Publish(topic string, msg []byte) {
 	createBrokerIfNeeded()
 	b.publish(topic, msg)
+}
+
+// Request publishes a message and then recieves a response
+func Request(topic string, msg []byte, timeout int) (Message, error) {
+	createBrokerIfNeeded()
+	return b.request(topic, msg, timeout)
 }
 
 func createBrokerIfNeeded() {

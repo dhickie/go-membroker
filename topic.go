@@ -20,7 +20,7 @@ func newTopic(name string) *topic {
 	}
 }
 
-func (t *topic) subscribe(callback func([]byte)) int {
+func (t *topic) subscribe(callback func(Message)) int {
 	id := t.getSubID()
 	t.subs[id] = newSubscriber(id, callback)
 
@@ -31,7 +31,7 @@ func (t *topic) unsubscribe(id int) {
 	delete(t.subs, id)
 }
 
-func (t *topic) publish(msg []byte) {
+func (t *topic) publish(msg Message) {
 	// Publish the message to each subscriber
 	for _, val := range t.subs {
 		val.process(msg)
