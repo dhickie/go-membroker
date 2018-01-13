@@ -2,16 +2,16 @@ package membroker
 
 type subscriber struct {
 	id int
-	fn func([]byte)
+	fn func(Message)
 }
 
-func newSubscriber(id int, callback func([]byte)) *subscriber {
+func newSubscriber(id int, callback func(Message)) *subscriber {
 	return &subscriber{
 		id: id,
 		fn: callback,
 	}
 }
 
-func (s *subscriber) process(message []byte) {
+func (s *subscriber) process(message Message) {
 	go s.fn(message)
 }
